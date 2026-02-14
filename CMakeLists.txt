@@ -308,3 +308,20 @@ install(
   DESTINATION
     "${CMAKE_INSTALL_LIBDIR}/cmake/opusfile"
 )
+
+set(OPUS_INSTALL_PKG_CONFIG_MODULE_HELP_STR "install pkg-config module.")
+option(OPUS_INSTALL_PKG_CONFIG_MODULE ${OPUS_INSTALL_PKG_CONFIG_MODULE_HELP_STR} ON)
+
+if(OPUS_INSTALL_PKG_CONFIG_MODULE)
+  set(prefix ${CMAKE_INSTALL_PREFIX})
+  set(exec_prefix ${CMAKE_INSTALL_PREFIX})
+  set(libdir ${CMAKE_INSTALL_FULL_LIBDIR})
+  set(includedir ${CMAKE_INSTALL_FULL_INCLUDEDIR})
+  set(VERSION ${PACKAGE_VERSION})
+  if(HAVE_LIBM)
+    set(LIBM "-lm")
+  endif()
+  configure_file(opusfile.pc.in opusfile.pc)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/opusfile.pc
+          DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+endif()
